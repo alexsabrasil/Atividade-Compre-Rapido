@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consultoria DevOps | Caso Compre Rápido - Grupo 1</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="logo">
+      <span class="badge">GRUPO 1</span>
+      <strong>Compre Rápido</strong> &bull; Resolução de Crise Black Friday
+    </div>
+    <nav>
+      <a href="#problema">O Problema</a>
+      <a href="#diagnostico">Diagnóstico</a>
+      <a href="#solucao">Nova Arquitetura</a>
+      <a href="#tecnologias">Tecnologias</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <h1>Relatório de Eng. de Arquitetura & DevOps</h1>
+      <p class="subtitle">Análise de Gargalo, Diagnóstico Monolítico e Proposta de Escalabilidade Horizontal para o E-commerce <strong>Compre Rápido</strong>.</p>
+      
+      <div class="status-card error">
+        <div class="status-indicator"></div>
+        <div>
+          <strong>CENÁRIO DE CRISE DETECTADO:</strong>
+          <span>Servidor monolítico fora do ar por saturação de CPU durante o pico da Black Friday.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 1: O PROBLEMA -->
+    <section id="problema" class="card">
+      <h2>1. O Problema: A Falha na Black Friday</h2>
+      <p>A plataforma <strong>Compre Rápido</strong> operava sob uma arquitetura monolítica tradicional hospedada em um único servidor. Com o aumento repentino do tráfego na Black Friday, a CPU do servidor atingiu 100% de utilização, resultando em indisponibilidade total do sistema e perda de vendas.</p>
+      
+      <div class="grid-2">
+        <div class="subcard">
+          <h3>Sintomas Observados</h3>
+          <ul>
+            <li>Timeouts em requisições HTTP (Status 504 Gateway Timeout).</li>
+            <li>Saturação severa de CPU e memória RAM no servidor central.</li>
+            <li>Incapacidade de processar pagamentos e checkout simultâneos.</li>
+          </ul>
+        </div>
+        <div class="subcard">
+          <h3>Causa Raiz</h3>
+          <ul>
+            <li>Acoplamento excessivo de serviços (Catálogo, Carrinho, Autenticação e Pagamento na mesma máquina).</li>
+            <li>Dependência de <strong>Escala Vertical (Scale-Up)</strong>, que possui limites físicos e alto custo financeiro.</li>
+            <li>Ponto único de falha (SPOF - Single Point of Failure).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: DIAGNÓSTICO -->
+    <section id="diagnostico" class="card">
+      <h2>2. Diagnóstico Técnico: Monolito vs. Escala Vertical</h2>
+      <p>A escala vertical consiste em adicionar mais hardware (CPU/RAM) à mesma máquina. Essa abordagem falhou pelos seguintes motivos:</p>
+
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Métrica / Conceito</th>
+            <th>Escala Vertical (Monolito)</th>
+            <th>Escala Horizontal (Proposta)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Resiliência</strong></td>
+            <td>Baixa (Se o servidor cai, tudo cai)</td>
+            <td>Alta (Réplicas mantêm o sistema no ar)</td>
+          </tr>
+          <tr>
+            <td><strong>Limite Financeiro/Técnico</strong></td>
+            <td>Possui teto (Hardware de ponta é caríssimo)</td>
+            <td>Flexível (Adiciona instâncias simples conforme a demanda)</td>
+          </tr>
+          <tr>
+            <td><strong>Manutenção & Deploy</strong></td>
+            <td>Risco alto (Deploy afeta o sistema todo)</td>
+            <td>Independente (Microsserviços / Containers)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SECTION 3: A SOLUÇÃO RECOMENDADA -->
+    <section id="solucao" class="card highlight-card">
+      <h2>3. Arquitetura Recomendada & Estratégias</h2>
+      <p>Para garantir tolerância a falhas e alta disponibilidade para os próximos eventos de alto tráfego, projetamos uma arquitetura baseada nos seguintes pilares:</p>
+
+      <div class="grid-3">
+        <div class="feature-box">
+          <div class="icon">🚀</div>
+          <h3>Escalabilidade Horizontal (Scale-Out)</h3>
+          <p>Distribuição do tráfego entre múltiplos nós/containers rodando instâncias da aplicação. Uso de <strong>Load Balancer (Nginx/HAProxy)</strong> para divisão de carga.</p>
+        </div>
+
+        <div class="feature-box">
+          <div class="icon">🗄️</div>
+          <h3>Sharding de Banco de Dados</h3>
+          <p>Particionamento horizontal dos dados (ex: por ID de cliente ou região) em diferentes nós de banco de dados, aliviando gargalos de I/O de leitura e escrita.</p>
+        </div>
+
+        <div class="feature-box">
+          <div class="icon">🛡️</div>
+          <h3>Tolerância a Falhas Automática</h3>
+          <p>Implementação de <strong>Health Checks</strong> constantes e Auto-Scaling. Se uma instância falhar, o Load Balancer redireciona a requisição e um novo container é subido automaticamente.</p>
+        </div>
+      </div>
+
+      <!-- DESENHO / FLUXO DA ARQUITETURA -->
+      <div class="architecture-diagram">
+        <h3>Esquema Conceitual da Nova Arquitetura</h3>
+        <div class="diagram-flow">
+          <div class="node">Usuários / Clientes</div>
+          <div class="arrow">➔</div>
+          <div class="node active">Load Balancer (Nginx)</div>
+          <div class="arrow">➔</div>
+          <div class="node-group">
+            <div class="node">App Node 1</div>
+            <div class="node">App Node 2</div>
+            <div class="node">App Node N</div>
+          </div>
+          <div class="arrow">➔</div>
+          <div class="node-group">
+            <div class="node db">DB Shard A</div>
+            <div class="node db">DB Shard B</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: DEVOPS & DOCKER -->
+    <section id="tecnologias" class="card">
+      <h2>4. Implementação DevOps & Publicação em Nuvem</h2>
+      <p>A interface do projeto foi conteinerizada para garantir consistência de ambiente do desenvolvimento à produção no <strong>Render</strong>.</p>
+
+      <div class="code-block">
+        <div class="code-header">Dockerfile (Produção com Nginx)</div>
+        <pre><code># Imagem base leve do Nginx
+FROM nginx:alpine
+
+# Copia os arquivos da aplicação para o diretório do Nginx
+COPY . /usr/share/nginx/html
+
+# Expõe a porta 80
+EXPOSE 80
+
+# Inicia o servidor Nginx
+CMD ["nginx", "-g", "daemon off;"]</code></pre>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Atividade Prática de Arquitetura de Software & DevOps &bull; Publicado via <strong>Render</strong> &bull; 2026</p>
+  </footer>
+
+</body>
+</html>
